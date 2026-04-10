@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — FixKar</title>
+<script>
+  if (sessionStorage.getItem('fk_admin_logged') !== 'true') {
+    window.location.href = '/admin/login.html';
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/css/style.css">
+<link rel="stylesheet" href="/admin/css/premium-admin.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<!-- 3D & Animation Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+<style>
+  body { background: var(--linen); }
+  #navbar { justify-content: space-between; }
+  .page { display: block !important; opacity: 1 !important; transform: none !important; position: relative !important; pointer-events: all !important; }
+</style>
+</head>
+<body>
+<!-- 3D Background Elements -->
+<canvas id="bg-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none;"></canvas>
+<div class="admin-orb admin-orb-1"></div>
+<div class="admin-orb admin-orb-2"></div>
+<div class="admin-orb admin-orb-3"></div>
+<div id="toasts"></div>
+
+<!-- ═══════════ NAVIGATION ═══════════ -->
+<nav id="navbar">
+  <div class="logo">
+    <div class="logo-icon">🔧</div>
+    Fix<span>Kar</span> <span style="font-weight:300;opacity:0.6;margin-left:4px;">Admin X</span>
+  </div>
+  <div class="nav-right" style="display: flex; gap: 15px; align-items: center;">
+    <div class="admin-status-pill">
+      <span class="pulse-dot"></span> Live Monitoring
+    </div>
+    <a href="../client/index.html" class="nav-cta" style="background:rgba(255,255,255,0.05); color:var(--white); text-decoration:none; border: 1px solid var(--border-subtle);">Client View</a>
+    <button class="nav-cta btn-danger" onclick="adminLogout()">Logout</button>
+  </div>
+</nav>
+
+<div class="admin-layout-wrapper" style="display:flex; min-height:100vh; padding-top:80px;">
+  <!-- SIDEBAR (Fixed) -->
+  <aside class="admin-sidebar" style="width:280px; padding:40px 24px; background:rgba(21, 21, 31, 0.5); backdrop-filter:blur(20px); border-right:1px solid var(--border-subtle); position:fixed; height:calc(100vh - 80px); left:0;">
+    <div class="sidebar-sec">
+      <div class="sb-label">Main Console</div>
+      <a href="javascript:void(0)" class="sb-link active" onclick="switchAdminView('overview', this)">📊 Dashboard Overview</a>
+      <a href="javascript:void(0)" class="sb-link" onclick="switchAdminView('pros', this)">🔧 Service Providers</a>
+      <a href="javascript:void(0)" class="sb-link" onclick="switchAdminView('appointments', this)">📅 Appointments</a>
+    </div>
+    <div class="sidebar-sec" style="margin-top:40px;">
+      <div class="sb-label">System Data</div>
+      <a href="javascript:void(0)" class="sb-link" onclick="toast('Logs module coming soon...', 'info')">📑 Activity Logs</a>
+      <a href="javascript:void(0)" class="sb-link" onclick="toast('Settings locked for security', 'err')">⚙️ Global Settings</a>
+      <button onclick="clearAllData()" class="sb-link" style="color:#ef4444; background:transparent; border:none; width:100%; text-align:left; cursor:pointer;">⚠️ Pure DB Reset</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main id="admin-page" class="page active" style="flex:1; margin-left:280px; padding-bottom:100px;">
+    <div class="admin-inner" style="max-width: 1300px; margin: 0 auto; padding: 40px 48px;">
+      
+      <div class="admin-hdr" style="margin-bottom: 48px; display: flex; justify-content: space-between; align-items: flex-end;">
+        <div>
+          <div class="reveal reveal-delay-1" style="font-size:12px; font-weight:700; color:var(--admin-secondary); text-transform:uppercase; letter-spacing:2px; margin-bottom:8px;">Control Center</div>
+          <h1 class="admin-ttl reveal" style="font-size: 42px; letter-spacing: -2px;">Platform Insights</h1>
+          <p class="reveal-delay-1" style="color: var(--ash); font-size: 15px; margin-top: 8px;">Real-time analytics and professional database management.</p>
+        </div>
+        <div style="display: flex; gap: 15px;" class="reveal">
+          <button class="nav-cta" style="background:var(--admin-secondary) !important;" onclick="window.location.reload()">Refresh Stream</button>
+        </div>
+      </div>
+
+    <!-- STATS GRID -->
+    <div class="admin-stats" id="admin-stats-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px;">
+      <!-- Stats will be injected here via JS -->
+    </div>
+
+    <!-- LIVE CHARTS (real data from localStorage — auto-refresh) -->
+    <div class="admin-charts-intro">
+      <h2 class="admin-charts-title">Live analytics</h2>
+      <p class="admin-charts-sub">Charts update every few seconds from your browser data (visits, pros, bookings).</p>
+    </div>
+    <div class="admin-charts-grid">
+      <div class="admin-chart-card admin-chart-card--wide tilt-3d">
+        <h3 class="admin-chart-h">Profession mix</h3>
+        <p class="admin-chart-desc">Detailed distribution of all 10+ service categories across the platform</p>
+        <div class="admin-chart-canvas-wrap"><canvas id="chart-pro-mix" height="280"></canvas></div>
+      </div>
+      
+      <div class="admin-chart-card admin-chart-card--wide tilt-3d">
+        <h3 class="admin-chart-h">Site visits (last 7 days)</h3>
+        <p class="admin-chart-desc">Analytics derived from real-time website traffic logs</p>
+        <div class="admin-chart-canvas-wrap"><canvas id="chart-visits-line" height="260"></canvas></div>
+      </div>
+
+      <div class="admin-chart-card tilt-3d">
+        <h3 class="admin-chart-h">Bookings throughput</h3>
+        <p class="admin-chart-desc">Daily job completion rate</p>
+        <div class="admin-chart-canvas-wrap"><canvas id="chart-bookings-bar" height="240"></canvas></div>
+      </div>
+
+      <div class="admin-chart-card tilt-3d">
+        <h3 class="admin-chart-h">Top cities</h3>
+        <p class="admin-chart-desc">Pros by city</p>
+        <div class="admin-chart-canvas-wrap"><canvas id="chart-cities-hbar" height="260"></canvas></div>
+      </div>
+      <div class="admin-chart-card tilt-3d" style="display:flex; flex-direction:column;">
+        <h3 class="admin-chart-h">Live Activity Feed</h3>
+        <p class="admin-chart-desc">Latest system events</p>
+        <div id="activity-feed" style="flex:1; margin-top:15px; overflow-y:auto; max-height:240px; display:flex; flex-direction:column; gap:12px;">
+          <!-- Activity items will be injected here -->
+          <div style="padding:10px; border-left:2px solid var(--admin-secondary); background:rgba(255,255,255,0.02); font-size:12px;">
+            <span style="color:var(--ash); display:block; font-size:10px; margin-bottom:4px;">JUST NOW</span>
+            Dashboard synchronized with local database.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE HEADER LABELS -->
+    <div class="table-labels reveal" style="display: grid; grid-template-columns: 2fr 1fr 1fr 2fr 0.8fr 0.8fr 0.8fr 1fr 1.2fr; margin-top: 40px;">
+      <div>Provider & Contact</div>
+      <div>Specialty</div>
+      <div>Location</div>
+      <div>Service Catalog</div>
+      <div>Base Fee</div>
+      <div>Rating</div>
+      <div>Requests</div>
+      <div style="text-align: center;">Verification</div>
+      <div style="text-align: right;">Operations</div>
+    </div>
+
+
+    <!-- PROFESSIONAL LIST -->
+    <div id="admin-tbody" style="display: flex; flex-direction: column; gap: 12px;">
+      <!-- Cards will be injected here via JS -->
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ SCRIPT ═══════════ -->
+<script src="/client/js/3d-effects.js"></script>
+<script src="/client/js/premium-effects.js"></script>
+<script src="/admin/js/admin.js"></script>
+<script>
+  // Mobile Sidebar Toggle Logic
+  document.querySelector('.logo').addEventListener('click', function() {
+    if (window.innerWidth <= 992) {
+      document.querySelector('.admin-sidebar').classList.toggle('active');
+    }
+  });
+
+  // Close sidebar on link click
+  document.querySelectorAll('.sb-link').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 992) {
+        document.querySelector('.admin-sidebar').classList.remove('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>

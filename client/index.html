@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FixKar — Plumbers & Electricians Near You</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/client/css/style.css">
+  <link rel="stylesheet" href="/client/css/responsive.css">
+  <link rel="stylesheet" href="/client/css/premium-design.css">
+  <link rel="stylesheet" href="/client/css/amazing-animations.css">
+  <!-- 3D & Animation Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+</head>
+
+<body>
+  <div id="toasts"></div>
+
+  <nav id="navbar"
+    style="background:rgba(28, 30, 26, 0.85); backdrop-filter: blur(20px); border-bottom:1px solid var(--border);">
+    <div class="logo" onclick="window.location.href='index.html'">
+      <div class="logo-icon">🔧</div>
+      <span style="color:var(--white);">Fix</span> <span style="color:var(--amber);">Kar</span>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileNav()" aria-label="Toggle menu">
+      ☰
+    </button>
+    <div class="mobile-nav-overlay" onclick="toggleMobileNav()"></div>
+    <div class="nav-center" id="nav-center"
+      style="background:rgba(255,255,255,0.03); padding:4px; border-radius:40px; display:inline-flex; gap:4px; align-items:center; border: 1px solid var(--border-light);">
+      <button class="nav-tab active" id="tab-home" onclick="goPage('home')">Find Service</button>
+      <button class="nav-tab" id="tab-how" onclick="scrollHow()">How it works</button>
+      <button class="nav-tab" id="tab-register" onclick="goPage('register')">Register Service</button>
+    </div>
+    <div class="nav-right" style="display:flex; gap:8px; align-items:center;">
+      <button class="nav-cta mobile-hide-btn" onclick="goPage('register')" style="background:rgba(255,255,255,0.1); color:var(--white); border: 1px solid var(--border-light); border-radius:30px; font-size:12px; padding:8px 15px;">Register</button>
+      <button class="nav-cta" onclick="window.location.href='index.html#home-page'"
+        style="background:var(--amber); color:var(--void); border-radius:30px; font-weight:700;">Book Now</button>
+    </div>
+  </nav>
+
+  <!-- ═══════════ HOME PAGE ═══════════ -->
+  <div id="home-page" class="page active">
+
+    <!-- HERO -->
+    <section id="hero" style="position:relative; overflow:hidden;">
+      <canvas id="bg-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"></canvas>
+      <div class="hero-glow"></div>
+      <div class="hero-inner">
+        <div class="hero-content">
+          <h1 class="hero-h1">
+            Trusted home<br>just a click away
+          </h1>
+
+          <!-- Search Widget -->
+          <div class="search-widget glass-card-deep">
+            <p class="hero-sub-title">What are you looking for?</p>
+            <div class="type-toggle" style="grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));">
+              <div class="tt-card sel" id="tt-plumber" onclick="setType('plumber')">
+                <div class="tt-icon">🔧</div>
+                <div class="tt-label">Plumbing</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-elec" onclick="setType('electrician')">
+                <div class="tt-icon">⚡</div>
+                <div class="tt-label">Electrician</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-beautician" onclick="setType('beautician')">
+                <div class="tt-icon">💄</div>
+                <div class="tt-label">Beautician</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-ac" onclick="setType('ac')">
+                <div class="tt-icon">❄️</div>
+                <div class="tt-label">AC Repair</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-appliances" onclick="setType('appliances')">
+                <div class="tt-icon">📺</div>
+                <div class="tt-label">Appliances</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-physio" onclick="setType('physiotherapist')">
+                <div class="tt-icon">🧘</div>
+                <div class="tt-label">Physio</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-cleaner" onclick="setType('cleaner')">
+                <div class="tt-icon">🧹</div>
+                <div class="tt-label">Cleaning</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-carpenter" onclick="setType('carpenter')">
+                <div class="tt-icon">🔨</div>
+                <div class="tt-label">Carpenter</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-painter" onclick="setType('painter')">
+                <div class="tt-icon">🎨</div>
+                <div class="tt-label">Painter</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-pest" onclick="setType('pest')">
+                <div class="tt-icon">🐜</div>
+                <div class="tt-label">Pest Control</div>
+                <div class="tt-glow"></div>
+              </div>
+              <div class="tt-card" id="tt-both" onclick="setType('both')">
+                <div class="tt-icon">🏠</div>
+                <div class="tt-label">All Services</div>
+                <div class="tt-glow"></div>
+              </div>
+            </div>
+
+            <div class="search-form-grid">
+              <div class="fg" style="position:relative;">
+                <label class="fl">CITY</label>
+                <input type="text" class="sw-input" id="sw-city-new" placeholder="Enter City..."
+                  oninput="handleSmartLocInput(this.value)" autocomplete="off" />
+                <div id="city-dropdown" class="loc-dropdown"></div>
+              </div>
+              <div class="fg">
+                <label class="fl">AREA / LOCALITY</label>
+                <input type="text" class="sw-input" id="sw-area-new" placeholder="Enter Area..." autocomplete="off" />
+              </div>
+              <div class="fg">
+                <label class="fl">PINCODE (OPTIONAL)</label>
+                <input type="text" class="sw-input" id="sw-pin-new" placeholder="e.g. 380060" maxlength="6"
+                  oninput="handleSmartPinInput(this.value)" />
+              </div>
+              <div class="fg">
+                <label class="fl">USE GPS</label>
+                <button class="sw-input gps-field-btn" onclick="getGPS()">📍 Detect Location</button>
+              </div>
+            </div>
+
+            <!-- Hidden legacy fields for compatibility -->
+            <input type="hidden" id="sw-city" value="" />
+            <input type="hidden" id="sw-area" value="" />
+            <input type="hidden" id="sw-pin" value="" />
+            <input type="hidden" id="sw-loc-input" value="" />
+
+            <button class="search-btn" onclick="doSearchNew()">Search Professionals →</button>
+          </div>
+
+        </div>
+
+        <div class="hero-visuals-premium">
+          <div class="visual-man-wrapper parallax-slow" style="perspective:2000px;">
+            <img src="/client/images/pointing-handyman.png" class="hero-man-img" alt="FixKar Expert"
+              style="transform:translateZ(50px);">
+
+            <div class="man-glow-1"></div>
+            <div class="man-glow-2"></div>
+            <div class="hero-blob"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE CHIPS -->
+    <div class="services-strip" id="service-strip">
+      <span class="service-chip active" onclick="chipFilter(this,'all')">All Services</span>
+      <span class="service-chip" onclick="chipFilter(this,'Pipe Repair')">🔧 Pipe Repair</span>
+      <span class="service-chip" onclick="chipFilter(this,'Tap Fitting')">🚿 Tap Fitting</span>
+      <span class="service-chip" onclick="chipFilter(this,'Drain Cleaning')">🌀 Drain Cleaning</span>
+      <span class="service-chip" onclick="chipFilter(this,'Geyser')">🔥 Geyser</span>
+      <span class="service-chip" onclick="chipFilter(this,'Water Tank')">💧 Water Tank</span>
+      <span class="service-chip elec" onclick="chipFilter(this,'Wiring')">⚡ Wiring</span>
+      <span class="service-chip elec" onclick="chipFilter(this,'Fan / Light')">💡 Fan / Light</span>
+      <span class="service-chip elec" onclick="chipFilter(this,'Switchboard')">🔌 Switchboard</span>
+      <span class="service-chip elec" onclick="chipFilter(this,'Inverter')">🔋 Inverter</span>
+      <span class="service-chip elec" onclick="chipFilter(this,'Short Circuit Fix')">⚠️ Short Circuit</span>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results-section">
+      <div class="results-header">
+        <div class="res-info">Showing <strong id="res-count">0</strong> professionals <span id="res-loc"></span></div>
+        <div class="sort-row">
+          <button class="sort-chip on" onclick="sortProfs(this,'default')">Best Match</button>
+          <button class="sort-chip" onclick="sortProfs(this,'rating')">Top Rated</button>
+          <button class="sort-chip" onclick="sortProfs(this,'fee')">Lowest Fee</button>
+          <button class="sort-chip" onclick="sortProfs(this,'exp')">Most Experienced</button>
+        </div>
+      </div>
+      <div class="pro-grid" id="pro-grid"></div>
+    </div>
+    <div class="empty-wrap" id="empty-wrap">
+      <div class="empty-icon">🔍</div>
+      <h3 class="empty-h">No professionals found</h3>
+      <p class="empty-p">No registered professionals in this area yet. Try a different city or area.</p>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-section">
+      <div class="how-inner">
+        <div class="section-eyebrow">How FixKar works</div>
+        <h2 class="section-h2">Simple, fast, transparent</h2>
+        <p class="section-sub">Book a verified professional in 3 easy steps</p>
+        <div class="how-grid premium-grid">
+          <div class="how-card premium-card">
+            <div class="how-visual-box">
+              <img src="/client/images/step-1.png" alt="Select Area" class="how-img">
+              <div class="card-glass-layer"></div>
+            </div>
+            <div class="how-content-area">
+              <div class="how-num">STEP 01</div>
+              <div class="how-title">Select your area</div>
+              <div class="how-desc">Choose your city and locality — or tap Detect Location to auto-fill.</div>
+            </div>
+          </div>
+          <div class="how-card premium-card">
+            <div class="how-visual-box">
+              <img src="/client/images/step-2.png" alt="View Portfolio" class="how-img">
+              <div class="card-glass-layer"></div>
+            </div>
+            <div class="how-content-area">
+              <div class="how-num">STEP 02</div>
+              <div class="how-title">View portfolio & book</div>
+              <div class="how-desc">Browse services, fees, and genuine reviews from your neighbours. One-tap booking.
+              </div>
+            </div>
+          </div>
+          <div class="how-card premium-card">
+            <div class="how-visual-box">
+              <img src="/client/images/step-3.png" alt="Live Tracking" class="how-img">
+              <div class="card-glass-layer"></div>
+            </div>
+            <div class="how-content-area">
+              <div class="how-num">STEP 03</div>
+              <div class="how-title">Live arrival tracking</div>
+              <div class="how-desc">Watch your professional's position update live on the map. Know exactly when they'll
+                arrive.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST -->
+    <section id="trust-section">
+      <div class="trust-inner">
+        <div class="section-eyebrow" style="color:var(--amber)">Why FixKar</div>
+        <h2 class="section-h2" style="color:var(--white)">Built on trust</h2>
+        <p class="section-sub" style="color:var(--ash)">Every professional on FixKar goes through our verification
+          process</p>
+        <div class="trust-grid">
+          <div class="trust-card">
+            <div class="trust-icon">🪪</div>
+            <div class="trust-title">ID Verified</div>
+            <div class="trust-text">Every professional's Aadhaar and work documents are checked before they go live.
+            </div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-icon">⭐</div>
+            <div class="trust-title">Real Reviews</div>
+            <div class="trust-text">Only customers who actually booked can leave a review — no fake ratings.</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-icon">💰</div>
+            <div class="trust-title">Upfront Pricing</div>
+            <div class="trust-text">You see the visit fee and hourly rate before booking — zero surprise charges.</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-icon">⚡</div>
+            <div class="trust-title">Fast Response</div>
+            <div class="trust-text">Most professionals confirm within minutes. Emergency slots available 24/7.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+      <div class="footer-inner">
+        <div class="footer-col" style="flex: 1.5;">
+          <div class="footer-logo">🔧 Fix<span>Kar</span></div>
+          <p class="footer-desc">Your trusted marketplace for finding verified, expert plumbers and electricians
+            directly in your neighborhood. We make home maintenance simple, transparent, and fast.</p>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-h">Services</h3>
+          <a href="/client/index.html?type=plumber" class="footer-link">Plumbing Setup</a>
+          <a href="/client/index.html?type=electrician" class="footer-link">Electrician Services</a>
+          <a href="/client/index.html#how-section" class="footer-link">How it Works</a>
+          <a href="/client/index.html?type=both" class="footer-link">All Services</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-h">Company</h3>
+          <a href="/client/about.html" class="footer-link">About Us</a>
+          <a href="/client/trust.html" class="footer-link">Trust & Safety</a>
+          <a href="/client/terms.html" class="footer-link">Terms & Privacy</a>
+          <a href="/client/contact.html" class="footer-link">Contact Us</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-h">Support</h3>
+          <a href="mailto:support@fixkar.in" class="footer-link">support@fixkar.in</a>
+          <a href="tel:18001234567" class="footer-link">1800-123-4567</a>
+          <a href="/client/contact.html" class="footer-link">Help Center</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 FixKar Services. All rights reserved.</span>
+      </div>
+    </footer>
+
+  </div><!-- /home-page -->
+
+
+  <!-- ═══════════ REGISTER PAGE (hidden, URL: ?register) ═══════════ -->
+  <div id="register-page" class="page">
+    <div class="reg-wrap">
+      <div class="reg-eyebrow" id="reg-eyebrow">🔧 PLUMBER REGISTRATION</div>
+      <h1 class="reg-h" style="letter-spacing:-2px;font-size:clamp(40px,7vw,60px);font-weight:800;color:var(--white)">
+        Grow your business<br>with <span style="color:var(--white)">Fix<span
+            style="color:var(--amber)">Kar</span></span></h1>
+      <p class="reg-p">Create your free profile. Customers in your area will find you instantly.</p>
+
+      <div style="display:flex; gap:10px; margin-bottom:30px; justify-content:center; flex-wrap:wrap;">
+        <button onclick="openReg('plumber')" class="reg-type-btn active" id="btn-reg-plumber">🔧 Plumber</button>
+        <button onclick="openReg('electrician')" class="reg-type-btn" id="btn-reg-electrician">⚡ Electrician</button>
+        <button onclick="openReg('beautician')" class="reg-type-btn" id="btn-reg-beautician">💄 Beautician</button>
+        <button onclick="openReg('ac')" class="reg-type-btn" id="btn-reg-ac">❄️ AC Repair</button>
+        <button onclick="openReg('appliances')" class="reg-type-btn" id="btn-reg-appliances">📺 Appliances</button>
+        <button onclick="openReg('physiotherapist')" class="reg-type-btn" id="btn-reg-physiotherapist">🧘
+          Physio</button>
+        <button onclick="openReg('cleaner')" class="reg-type-btn" id="btn-reg-cleaner">🧹 Cleaner</button>
+        <button onclick="openReg('carpenter')" class="reg-type-btn" id="btn-reg-carpenter">🔨 Carpenter</button>
+        <button onclick="openReg('painter')" class="reg-type-btn" id="btn-reg-painter">🎨 Painter</button>
+        <button onclick="openReg('pest')" class="reg-type-btn" id="btn-reg-pest">🐜 Pest Control</button>
+      </div>
+
+      <div class="reg-card">
+        <!-- Personal -->
+        <div class="reg-sec">
+          <div class="reg-sec-h"><span class="sec-badge" style="background:var(--amber)">1</span>Personal & Profile
+            Photo</div>
+
+          <div
+            style="display:flex; flex-direction:column; align-items:center; margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.02); border-radius:20px; border:1px dashed var(--border);">
+            <div id="reg-photo-preview"
+              style="width:120px; height:120px; border-radius:50%; background:var(--charcoal); border:2px solid var(--amber); display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--ash); overflow:hidden; margin-bottom:15px;">
+              👤</div>
+            <div style="display:flex; gap:10px;">
+              <button class="cbtn cbtn-ghost" style="padding:8px 16px; font-size:12px;"
+                onclick="document.getElementById('r-photo-input').click()">📁 Gallery / Upload</button>
+              <button class="cbtn cbtn-ghost" style="padding:8px 16px; font-size:12px;" onclick="startCamera()">📸 Take
+                Photo</button>
+            </div>
+            <input type="file" id="r-photo-input" hidden accept="image/*" onchange="previewFile(this)">
+            <p style="font-size:11px; color:var(--ash); margin-top:10px;">Upload a professional photo for your profile
+              card</p>
+          </div>
+
+          <div class="form-g">
+            <div class="fg"><label class="fl">Full Name *</label><input type="text" class="fi" id="r-name"
+                placeholder="Ramesh Kumar" /></div>
+            <div class="fg"><label class="fl">Mobile Number *</label><input type="tel" class="fi" id="r-phone"
+                placeholder="9876543210" maxlength="10" /></div>
+            <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="r-email"
+                placeholder="ramesh@email.com" /></div>
+            <div class="fg"><label class="fl">Experience (years) *</label><input type="number" class="fi" id="r-exp"
+                placeholder="5" min="0" max="50" /></div>
+          </div>
+        </div>
+
+        <!-- Shop -->
+        <div class="reg-sec">
+          <div class="reg-sec-h"><span class="sec-badge" style="background:var(--amber)">2</span>Shop / Business Info
+          </div>
+          <div class="form-g">
+            <div class="fg full"><label class="fl">Shop / Business Name *</label><input type="text" class="fi"
+                id="r-shop" placeholder="Kumar Plumbing Works" /></div>
+            <div class="fg full"><label class="fl">Shop Address *</label><textarea class="fi" id="r-addr"
+                placeholder="Shop no., street, near landmark..."></textarea></div>
+            <div class="fg" style="position:relative;">
+              <label class="fl">City *</label>
+              <input type="text" class="fi" id="r-city" placeholder="Enter City..."
+                oninput="handleSmartLocInput(this.value, 'reg')" autocomplete="off" />
+              <div id="reg-city-dropdown" class="loc-dropdown"></div>
+            </div>
+            <div class="fg">
+              <label class="fl">Area / Locality *</label>
+              <input type="text" class="fi" id="r-area" placeholder="Enter Area..." autocomplete="off" />
+            </div>
+            <div class="fg"><label class="fl">Pincode *</label><input type="text" class="fi" id="r-pin"
+                placeholder="e.g. 380001" maxlength="6" oninput="handleSmartPinInput(this.value, 'reg')" /></div>
+            <div class="fg"><label class="fl">WhatsApp Number</label><input type="tel" class="fi" id="r-wa"
+                placeholder="9876543210" maxlength="10" /></div>
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div class="reg-sec">
+          <div class="reg-sec-h"><span class="sec-badge" style="background:var(--amber)">3</span>Services Offered</div>
+          <div id="svcs-plumber">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item"><input type="checkbox" value="Pipe Repair" /><span>🔧 Pipe Repair</span></label>
+              <label class="cbx-item"><input type="checkbox" value="Tap Fitting" /><span>🚿 Tap Fitting</span></label>
+              <label class="cbx-item"><input type="checkbox" value="Drain Cleaning" /><span>🌀 Drain
+                  Cleaning</span></label>
+              <label class="cbx-item"><input type="checkbox" value="Geyser Service" /><span>🔥 Geyser
+                  Service</span></label>
+              <label class="cbx-item"><input type="checkbox" value="Water Tank" /><span>💧 Water Tank</span></label>
+              <label class="cbx-item"><input type="checkbox" value="Bathroom Fitting" /><span>🚽 Bathroom
+                  Fitting</span></label>
+              <label class="cbx-item"><input type="checkbox" value="Leakage Fix" /><span>💦 Leakage Fix</span></label>
+              <label class="cbx-item"><input type="checkbox" value="Bore Well" /><span>⛏️ Bore Well</span></label>
+            </div>
+          </div>
+          <div id="svcs-elec" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item elec-cb"><input type="checkbox" value="Wiring" /><span>⚡ Wiring</span></label>
+              <label class="cbx-item elec-cb"><input type="checkbox" value="Fan / Light Fitting" /><span>💡 Fan /
+                  Light</span></label>
+              <label class="cbx-item elec-cb"><input type="checkbox" value="Switchboard" /><span>🔌
+                  Switchboard</span></label>
+              <label class="cbx-item elec-cb"><input type="checkbox" value="Inverter / UPS" /><span>🔋
+                  Inverter</span></label>
+              <label class="cbx-item elec-cb"><input type="checkbox" value="Short Circuit Fix" /><span>⚠️ Short
+                  Circuit</span></label>
+              <label class="cbx-item elec-cb"><input type="checkbox" value="CCTV / Security" /><span>📷
+                  CCTV</span></label>
+            </div>
+          </div>
+          <div id="svcs-beautician" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item beauti-cb"><input type="checkbox" value="Facial / Cleanup" /><span>💄
+                  Facial</span></label>
+              <label class="cbx-item beauti-cb"><input type="checkbox" value="Hair Styling" /><span>✂️ Hair
+                  Styling</span></label>
+              <label class="cbx-item beauti-cb"><input type="checkbox" value="Bridal Makeup" /><span>👰 Bridal
+                  Makeup</span></label>
+              <label class="cbx-item beauti-cb"><input type="checkbox" value="Waxing / Threading" /><span>✨
+                  Waxing</span></label>
+              <label class="cbx-item beauti-cb"><input type="checkbox" value="Manicure / Pedicure" /><span>💅
+                  Mani-Pedi</span></label>
+            </div>
+          </div>
+          <div id="svcs-physiotherapist" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item physio-cb"><input type="checkbox" value="Back Pain Therapy" /><span>🧘 Back
+                  Pain</span></label>
+              <label class="cbx-item physio-cb"><input type="checkbox" value="Sports Injury" /><span>🏃 Sports
+                  Injury</span></label>
+              <label class="cbx-item physio-cb"><input type="checkbox" value="Post-Op Recovery" /><span>🏥
+                  Post-Op</span></label>
+              <label class="cbx-item physio-cb"><input type="checkbox" value="Elderly Care" /><span>👴 Elderly
+                  Care</span></label>
+              <label class="cbx-item physio-cb"><input type="checkbox" value="Stroke Rehab" /><span>🫀 Stroke
+                  Rehab</span></label>
+            </div>
+          </div>
+          <div id="svcs-cleaner" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item clean-cb"><input type="checkbox" value="Deep Home Cleaning" /><span>🧹 Deep
+                  Cleaning</span></label>
+              <label class="cbx-item clean-cb"><input type="checkbox" value="Bathroom Cleaning" /><span>🧼
+                  Bathroom</span></label>
+              <label class="cbx-item clean-cb"><input type="checkbox" value="Kitchen Deep Clean" /><span>🍳
+                  Kitchen</span></label>
+              <label class="cbx-item clean-cb"><input type="checkbox" value="Sofa / Carpet Spa" /><span>🛋️ Sofa
+                  Spa</span></label>
+              <label class="cbx-item clean-cb"><input type="checkbox" value="Full House Dusting" /><span>✨
+                  Dusting</span></label>
+            </div>
+          </div>
+          <div id="svcs-ac" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item ac-cb"><input type="checkbox" value="AC Service" /><span>❄️ AC
+                  Service</span></label>
+              <label class="cbx-item ac-cb"><input type="checkbox" value="AC Repair" /><span>🛠️ AC
+                  Repair</span></label>
+              <label class="cbx-item ac-cb"><input type="checkbox" value="Gas Charge" /><span>💨 Gas
+                  Charge</span></label>
+              <label class="cbx-item ac-cb"><input type="checkbox" value="Installation" /><span>🏗️
+                  Installation</span></label>
+            </div>
+          </div>
+          <div id="svcs-appliances" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item app-cb"><input type="checkbox" value="Washing Machine" /><span>🧺 Wash
+                  Mach</span></label>
+              <label class="cbx-item app-cb"><input type="checkbox" value="Refrigerator" /><span>🍦
+                  Fridge</span></label>
+              <label class="cbx-item app-cb"><input type="checkbox" value="Microwave" /><span>🍕
+                  Microwave</span></label>
+              <label class="cbx-item app-cb"><input type="checkbox" value="Water Purifier" /><span>💧
+                  Purifier</span></label>
+              <label class="cbx-item app-cb"><input type="checkbox" value="TV Repair" /><span>📺 TV
+                  Repair</span></label>
+            </div>
+          </div>
+          <div id="svcs-carpenter" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item carp-cb"><input type="checkbox" value="Furniture Repair" /><span>🔨 Furn.
+                  Repair</span></label>
+              <label class="cbx-item carp-cb"><input type="checkbox" value="Doors / Windows" /><span>🚪
+                  Doors</span></label>
+              <label class="cbx-item carp-cb"><input type="checkbox" value="Modular Kitchen" /><span>👨‍🍳 Mod.
+                  Kitchen</span></label>
+              <label class="cbx-item carp-cb"><input type="checkbox" value="Custom Furniture" /><span>🛋️
+                  Custom</span></label>
+            </div>
+          </div>
+          <div id="svcs-painter" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item paint-cb"><input type="checkbox" value="Full Home Paint" /><span>🎨 Home
+                  Paint</span></label>
+              <label class="cbx-item paint-cb"><input type="checkbox" value="Wall Decor" /><span>✨ Wall
+                  Decor</span></label>
+              <label class="cbx-item paint-cb"><input type="checkbox" value="Waterproofing" /><span>💧
+                  Waterproof</span></label>
+              <label class="cbx-item paint-cb"><input type="checkbox" value="Texture Paint" /><span>🖌️
+                  Texture</span></label>
+            </div>
+          </div>
+          <div id="svcs-pest" style="display:none">
+            <label class="fl" style="margin-bottom:10px;display:block">Select all services you provide *</label>
+            <div class="cbx-grid">
+              <label class="cbx-item pest-cb"><input type="checkbox" value="General Pest" /><span>🐜 General
+                  Pest</span></label>
+              <label class="cbx-item pest-cb"><input type="checkbox" value="Termite Control" /><span>🪵
+                  Termite</span></label>
+              <label class="cbx-item pest-cb"><input type="checkbox" value="Cockroach Control" /><span>🪳
+                  Cockroach</span></label>
+              <label class="cbx-item pest-cb"><input type="checkbox" value="Bed Bug Treatment" /><span>🛌 Bed
+                  Bug</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="reg-sec">
+          <div class="reg-sec-h"><span class="sec-badge" style="background:var(--amber)">4</span>Pricing & Description
+          </div>
+          <div class="form-g">
+            <div class="fg"><label class="fl">Visit / Inspection Fee (₹) *</label><input type="number" class="fi"
+                id="r-fee" placeholder="150" min="0" /></div>
+            <div class="fg"><label class="fl">Hourly Rate (₹, optional)</label><input type="number" class="fi"
+                id="r-hourly" placeholder="300" min="0" /></div>
+            <div class="fg full"><label class="fl">About You / Portfolio Description</label><textarea class="fi"
+                id="r-about" placeholder="Describe your expertise, specialties, brands you work with..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="reg-sec" style="border-bottom:none; padding-bottom:40px; text-align:center;">
+          <div class="submit-btn-container"
+            style="display:flex; justify-content:center; margin-bottom:15px; position:relative; z-index:20;">
+            <button id="register-profile-btn" type="button" class="submit-btn"
+              style="background:var(--amber); width:100%; max-width:500px; padding:18px; font-size:16px; border-radius:16px; box-shadow:0 10px 30px var(--amber-glow);">Register
+              My Profile on
+              FixKar →</button>
+          </div>
+          <p style="font-size:12px;color:var(--ash); opacity:0.7; pointer-events:none;">Your profile will be live
+            immediately. Users can find and book you right away.</p>
+        </div>
+
+      </div><!-- /reg-card -->
+    </div><!-- /reg-wrap -->
+  </div><!-- /register-page -->
+
+  <!-- ═══════════ REGISTER SUCCESS PAGE ═══════════ -->
+  <div id="register-success-page" class="page">
+    <div class="reg-wrap" style="max-width:600px; text-align:center; padding-top:100px;">
+      <div style="font-size:80px; margin-bottom:20px;">🎉</div>
+      <h1 class="reg-h" style="font-size:36px; margin-bottom:12px;">Profile Registered!</h1>
+      <p class="reg-p" style="margin-bottom:32px;">Welcome to the FixKar family. Your professional profile is now live
+        and can be seen by customers in your area.</p>
+      <button class="search-btn" onclick="goPage('home')"
+        style="background:var(--amber); width:auto; padding:16px 40px; border-radius:30px;">Go to Market Dashboard
+        →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════ PROFILE MODAL ═══════════ -->
+  <div class="overlay" id="profile-overlay">
+    <div class="modal" id="profile-modal"></div>
+  </div>
+
+  <!-- ═══════════ BOOKING MODAL ═══════════ -->
+  <div class="overlay" id="booking-overlay">
+    <div class="modal" id="booking-modal"></div>
+  </div>
+
+  <!-- ═══════════ SCRIPT ═══════════ -->
+  <script src="/client/js/3d-effects.js"></script>
+  <script src="/client/js/premium-effects.js"></script>
+  <script src="/client/js/amazing-effects.js"></script>
+  <script src="/client/js/main.js"></script>
+</body>
+
+</html>

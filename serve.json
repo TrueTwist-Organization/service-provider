@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/about", "destination": "/client/about.html" },
+    { "source": "/trust", "destination": "/client/trust.html" },
+    { "source": "/terms", "destination": "/client/terms.html" },
+    { "source": "/contact", "destination": "/client/contact.html" }
+  ],
+  "cleanUrls": true
+}

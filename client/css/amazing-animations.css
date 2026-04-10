@@ -1,0 +1,106 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   FIXKAR HYPER-MOTION 3D
+   Advanced CSS Animations for an Attractive 3D Feel
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* 3D Float for Luxury Badges */
+@keyframes luxuryFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0);
+    }
+
+    33% {
+        transform: translateY(-15px) rotate(2deg);
+    }
+
+    66% {
+        transform: translateY(10px) rotate(-2deg);
+    }
+}
+
+.floating {
+    animation: luxuryFloat 6s ease-in-out infinite;
+    transform-style: preserve-3d;
+}
+
+/* Glassmorphism Pulse */
+@keyframes glassPulse {
+
+    0%,
+    100% {
+        border-color: var(--glass-border);
+        box-shadow: var(--shadow-md);
+    }
+
+    50% {
+        border-color: var(--amber);
+        box-shadow: 0 0 30px var(--amber-glow);
+    }
+}
+
+.premium-card {
+    animation: glassPulse 4s infinite alternate;
+}
+
+/* Text Shimmer Effect */
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.hero-h1 span {
+    background: linear-gradient(90deg, #fff, var(--amber), #fff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 5s linear infinite;
+}
+
+/* 3D Button Glitch/Shine */
+.submit-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+            transparent 45%,
+            rgba(255, 255, 255, 0.4) 50%,
+            transparent 55%);
+    transform: rotate(-45deg);
+    transition: all 0.5s;
+    opacity: 0;
+}
+
+.submit-btn:hover::after {
+    left: 100%;
+    top: 100%;
+    opacity: 1;
+}
+
+/* Responsive 3D Adjustments */
+@media (max-width: 768px) {
+    .luxury-badge {
+        scale: 0.8;
+    }
+
+    #bg-canvas {
+        opacity: 0.6;
+    }
+
+    /* Slight dim on mobile for performance */
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — FixKar</title>
+<script>
+  if (sessionStorage.getItem('fk_admin_logged') === 'true') {
+    window.location.href = '/admin/';
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin/css/style.css">
+<link rel="stylesheet" href="/admin/css/premium-admin.css">
+<!-- 3D & Animation Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+<style>
+  body { 
+    height: 100vh; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: var(--void);
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+<!-- 3D Background Elements -->
+<canvas id="bg-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none;"></canvas>
+<div class="admin-orb admin-orb-1"></div>
+<div class="admin-orb admin-orb-2"></div>
+<div class="admin-orb admin-orb-3"></div>
+<div id="toasts"></div>
+
+<div class="login-card">
+  <div style="text-align: center; margin-bottom: 30px;">
+     <div class="logo-icon" style="margin: 0 auto 12px; width: 50px; height: 50px; font-size: 26px;">🔧</div>
+     <h1 class="admin-ttl" style="font-size: 24px;">Admin Login</h1>
+     <p style="color: var(--ash); font-size: 14px; margin-top: 4px;">Enter your credentials to access FixKar Admin</p>
+  </div>
+
+  <div class="form-g col1" style="gap: 20px;">
+    <div class="fg">
+      <label class="fl">Email Address</label>
+      <input type="email" class="fi" id="login-email" placeholder="riddhi@gmail.com" />
+    </div>
+    <div class="fg">
+      <label class="fl">Password</label>
+      <input type="password" class="fi" id="login-pass" placeholder="Enter password" />
+    </div>
+    <button class="submit-btn" onclick="adminLogin()">Login to Dashboard →</button>
+  </div>
+</div>
+
+<script src="/client/js/3d-effects.js"></script>
+<script src="/client/js/premium-effects.js"></script>
+<script src="/admin/js/admin.js"></script>
+</body>
+</html>

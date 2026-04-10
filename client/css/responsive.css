@@ -1,0 +1,102 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   FIXKAR SAPPHIRE RESPONSIVE V2
+   Ultimate mobile-first responsiveness for all devices
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+    .hero-inner { flex-direction: column !important; text-align: center; gap: 40px; padding-top: 40px; }
+    .hero-content { max-width: 100%; display: flex; flex-direction: column; align-items: center; order: 2; }
+    .hero-visuals-premium { height: 320px !important; width: 100%; margin-top: 20px; order: 1 !important; position: relative !important; }
+    .hero-man-img { position: relative !important; bottom: 0 !important; right: 0 !important; transform: none !important; width: 80% !important; max-width: 320px !important; margin: 0 auto; display: block; }
+}
+
+@media (max-width: 768px) {
+    #navbar { padding: 0 15px; }
+    .nav-links { display: none; } /* Hide desktop links */
+    
+    /* MOBILE NAVIGATION FLYOUT */
+    .nav-center {
+        display: none !important; /* Hide by default on mobile */
+    }
+    .nav-center.active {
+        display: flex !important;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 280px;
+        height: 100vh;
+        background: rgba(15, 15, 15, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        z-index: 9999;
+        box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+        backdrop-filter: blur(20px);
+        padding: 40px;
+    }
+    .nav-center.active .nav-tab {
+        width: 100%;
+        font-size: 18px;
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mobile-nav-overlay.active {
+        display: block !important;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 9998;
+    }
+
+    #hero { padding: 40px 15px 60px; min-height: auto; }
+    .hero-h1 { font-size: 34px !important; line-height: 1.2; text-align: center; }
+    .hero-p { font-size: 15px; text-align: center; margin: 0 auto 30px; }
+
+    .search-widget { width: 100%; border-radius: 20px; }
+    .search-form-grid { grid-template-columns: 1fr; gap: 12px; }
+    .type-toggle { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .tt-card { padding: 8px; }
+    .tt-icon { font-size: 18px; }
+    .tt-label { font-size: 10px; }
+
+    .services-strip { padding: 12px 15px; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .strip-item { font-size: 11px; padding: 6px 12px; }
+
+    .pro-grid { grid-template-columns: 1fr; padding: 15px; gap: 20px; }
+    .pro-card { max-width: 100%; margin: 0; }
+    
+    .how-grid { grid-template-columns: 1fr; gap: 30px; padding: 40px 15px; }
+    .trust-grid { grid-template-columns: 1fr; gap: 20px; padding: 40px 15px; }
+    
+    .footer-inner { flex-direction: column; gap: 40px; text-align: center; padding: 60px 20px; }
+    .footer-col { align-items: center; }
+}
+
+@media (max-width: 480px) {
+    .hero-h1 { font-size: 28px !important; }
+    .tt-card { border-radius: 10px; }
+    .nav-inner { gap: 10px; }
+    .nav-right { gap: 5px !important; }
+    .nav-right .nav-cta { padding: 8px 12px; font-size: 11px !important; border-radius: 20px !important; min-width: auto !important; }
+    .mobile-hide-btn { display: block !important; }
+    .logo { font-size: 18px; }
+}
+
+@media (min-width: 1025px) {
+    .mobile-hide-btn { display: none !important; }
+}
+
+/* Fix for the registration button hit area on mobile */
+.submit-btn-container {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+}
+.submit-btn-container .submit-btn {
+    width: 100%;
+    margin: 0;
+}
