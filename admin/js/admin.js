@@ -10,6 +10,8 @@ const DB = {
   bookings: () => JSON.parse(localStorage.getItem('fk_bks') || '[]'),
   setBks: v => localStorage.setItem('fk_bks', JSON.stringify(v)),
   visits: () => parseInt(localStorage.getItem('fk_visits') || '0', 10),
+  notifs: () => JSON.parse(localStorage.getItem('fk_admin_notifs') || '[]'),
+  setNotifs: v => localStorage.setItem('fk_admin_notifs', JSON.stringify(v)),
 };
 
 /** @type {Record<string, Chart>} */
@@ -29,7 +31,7 @@ const CHART_COLORS = {
 function adminLogin() {
   const email = (document.getElementById('login-email').value || '').trim();
   const pass = (document.getElementById('login-pass').value || '').trim();
-  if (email === 'riddhi@gmail.com' && pass === 'Riddhi123') {
+  if (email === 'admin@gmail.com' && pass === 'admin123') {
     sessionStorage.setItem('fk_admin_logged', 'true');
     window.location.href = '/admin/index.html';
   } else {
@@ -428,23 +430,47 @@ function updateActivityFeed(pros) {
   const feed = document.getElementById('activity-feed');
   if (!feed) return;
 
-  // Sort pros by ID (assuming ID is timestamp or similar) or just take last 5
-  const latestPros = [...pros].reverse().slice(0, 5);
+  const notifs = DB.notifs().slice(0, 8); // Latest 8 notifications
+  
   let html = `
-    <div style="padding:10px; border-left:2px solid var(--admin-secondary); background:rgba(255,255,255,0.02); font-size:12px;">
-      <span style="color:var(--ash); display:block; font-size:10px; margin-bottom:4px;">SYSTEM</span>
-      Dashboard localized and charts updated.
+    <div style="padding:10px; border-left:2px solid var(--admin-secondary); background:rgba(255,255,255,0.02); font-size:12px; margin-bottom:8px;">
+      <span style="color:var(--ash); display:block; font-size:10px; margin-bottom:4px;">SYSTEM STATUS</span>
+      Live synchronization active. Monitoring ${pros.length} providers.
     </div>
   `;
 
-  latestPros.forEach(p => {
-    html += `
-      <div style="padding:10px; border-left:2px solid var(--admin-primary); background:rgba(255,255,255,0.02); font-size:12px;">
-        <span style="color:var(--ash); display:block; font-size:10px; margin-bottom:4px;">NEW REGISTRATION</span>
-        <strong>${p.name}</strong> joined as ${p.type} in ${p.city}.
-      </div>
-    `;
-  });
+  if (notifs.length === 0) {
+    // Fallback to legacy pros display if no real notifications yet
+    const latestPros = [...pros].reverse().slice(0, 5);
+    latestPros.forEach(p => {
+      html += `
+        <div style="padding:12px; border-left:2px solid var(--admin-primary); background:rgba(255,255,255,0.02); font-size:12px; margin-bottom:8px; border-radius:4px;">
+          <span style="color:var(--admin-primary); display:block; font-size:10px; font-weight:700; margin-bottom:4px;">NEW REGISTRATION</span>
+          <strong>${p.name}</strong> joined as ${p.type} in ${p.city}.
+          <div style="font-size:10px; color:var(--ash); margin-top:4px;">Status: Auto-Verified</div>
+        </div>
+      `;
+    });
+  } else {
+    notifs.forEach(n => {
+      const isNew = n.unread;
+      html += `
+        <div style="padding:12px; border-left:2px solid ${isNew ? 'var(--admin-warning)' : 'var(--admin-primary)'}; background:${isNew ? 'rgba(245,158,11,0.05)' : 'rgba(255,255,255,0.02)'}; font-size:12px; margin-bottom:8px; border-radius:4px; position:relative;">
+          <span style="color:var(--ash); display:flex; justify-content:space-between; font-size:10px; margin-bottom:4px;">
+            <span>${n.time}</span>
+            <span style="color:var(--admin-primary); font-weight:700;">${n.type}</span>
+          </span>
+          <div style="font-weight:600; color:var(--white); margin-bottom:2px;">${n.title}</div>
+          <p style="margin:0; color:var(--ash); line-height:1.4;">${n.msg}</p>
+          ${isNew ? '<div style="position:absolute; top:8px; right:8px; width:6px; height:6px; background:var(--admin-warning); border-radius:50%;"></div>' : ''}
+        </div>
+      `;
+    });
+    
+    // Auto-mark notifications as read after displaying in a live environment
+    // In a real app this would be triggered by a "clear" button or hover
+    // but for demo we can clear unread status after some time
+  }
 
   feed.innerHTML = html;
 }

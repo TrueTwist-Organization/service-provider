@@ -38,29 +38,53 @@ function initThreeBG() {
     partGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     scene.add(new THREE.Points(partGeo, new THREE.PointsMaterial({ size: 0.015, color: 0xfacc15, transparent: true, opacity: 0.2 })));
 
-    // WIDE AREA SERVICE ICONS
-    const cloudGroup = new THREE.Group();
-    const emojis = ['🔧', '⚡', '💄', '❄️', '📺', '🧘', '🧹', '🔨', '🎨', '🐜'];
-    const serviceItems = [];
-    emojis.forEach((emoji, i) => {
-        const can = document.createElement('canvas');
-        const ctx = can.getContext('2d');
-        can.width = 128; can.height = 128;
-        ctx.font = '100px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(emoji, 64, 64);
-        const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(can), transparent: true, opacity: 0.8 }));
-        
-        const angle = (i / emojis.length) * Math.PI * 2;
-        const radius = 12 + Math.random() * 8; 
-        sprite.position.x = Math.cos(angle) * radius;
-        sprite.position.y = (Math.random() - 0.5) * 14;
-        sprite.position.z = (Math.random() - 0.5) * 8;
-        sprite.scale.set(1.8, 1.8, 1);
-        cloudGroup.add(sprite);
-        serviceItems.push({ sprite, angle, radius, speed: 0.002 + Math.random() * 0.004 });
+    // PREMIUM TECH ATMOSPHERE - 3D GRID
+    const gridCount = 20;
+    const gridGroup = new THREE.Group();
+    const lineMat = new THREE.LineBasicMaterial({ color: 0xfacc15, transparent: true, opacity: 0.1 });
+    
+    for (let i = -gridCount; i <= gridCount; i++) {
+        // Horizontal Lines
+        const hPoints = [new THREE.Vector3(-30, i * 2, -10), new THREE.Vector3(30, i * 2, -10)];
+        const hGeo = new THREE.BufferGeometry().setFromPoints(hPoints);
+        gridGroup.add(new THREE.Line(hGeo, lineMat));
+
+        // Vertical Lines
+        const vPoints = [new THREE.Vector3(i * 2, -30, -10), new THREE.Vector3(i * 2, 30, -10)];
+        const vGeo = new THREE.BufferGeometry().setFromPoints(vPoints);
+        gridGroup.add(new THREE.Line(vGeo, lineMat));
+    }
+    scene.add(gridGroup);
+
+    // FLOATING TECH CRYSTALS
+    const crystalGroup = new THREE.Group();
+    const crystalGeo = new THREE.OctahedronGeometry(1.5, 0);
+    const crystalMat = new THREE.MeshPhongMaterial({ 
+        color: 0xfacc15, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.2,
+        emissive: 0xfacc15,
+        emissiveIntensity: 0.5
     });
-    scene.add(cloudGroup);
-    cloudGroup.position.set(0, 0, -5);
+
+    const crystals = [];
+    for(let i=0; i<6; i++) {
+        const mesh = new THREE.Mesh(crystalGeo, crystalMat);
+        mesh.position.set(
+            (Math.random() - 0.5) * 40,
+            (Math.random() - 0.5) * 20,
+            (Math.random() - 0.5) * 10 - 5
+        );
+        mesh.rotation.set(Math.random(), Math.random(), Math.random());
+        crystalGroup.add(mesh);
+        crystals.push({ mesh, speed: 0.01 + Math.random() * 0.02 });
+    }
+    scene.add(crystalGroup);
+    
+    // Track references for animation
+    const serviceItems = crystals; 
+    const cloudGroup = crystalGroup;
 
     const pointLight = new THREE.PointLight(0xfacc15, 5, 40);
     scene.add(pointLight);
@@ -76,11 +100,16 @@ function initThreeBG() {
     function animate() {
         requestAnimationFrame(animate);
         
-        serviceItems.forEach((item, i) => {
-            item.angle += item.speed;
-            item.sprite.position.x = Math.cos(item.angle) * item.radius;
-            item.sprite.position.y += Math.sin(Date.now() * 0.0008 + i) * 0.02;
+        crystals.forEach((item, i) => {
+            item.mesh.rotation.x += item.speed * 0.5;
+            item.mesh.rotation.y += item.speed;
+            item.mesh.position.y += Math.sin(Date.now() * 0.001 + i) * 0.01;
         });
+
+        if(gridGroup) {
+            gridGroup.rotation.y = mouseX * 0.2;
+            gridGroup.rotation.x = -mouseY * 0.2;
+        }
 
         camera.position.x += (mouseX * 8 - camera.position.x) * 0.05;
         camera.position.y += (-mouseY * 8 - camera.position.y) * 0.05;
@@ -150,7 +179,7 @@ function initGSAPAnimations() {
 function initTiltEffects() {
     if (typeof VanillaTilt === 'undefined') return;
 
-    const targets = document.querySelectorAll('.glass-card, .pro-card, .reg-card, .tt-card, .luxury-badge');
+    const targets = document.querySelectorAll('.glass-card, .tt-card, .luxury-badge');
     VanillaTilt.init(Array.from(targets), {
         max: 12,
         speed: 800,
@@ -190,12 +219,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initGSAPAnimations();
     initTiltEffects();
     initMagneticElements();
-
-    // Re-init on dynamic content
-    const observer = new MutationObserver(() => {
-        initTiltEffects();
-        initMagneticElements();
-    });
-    const grid = document.getElementById('pro-grid');
-    if (grid) observer.observe(grid, { childList: true });
 });

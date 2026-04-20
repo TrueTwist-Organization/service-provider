@@ -25,7 +25,7 @@
     // ═══════════════════════════════════════════════════════════════════════════
     function initScrollReveal() {
         const revealElements = document.querySelectorAll(
-            '.glass-card, .trust-card, .how-card, .pro-card, .admin-card, ' +
+            '.glass-card, .trust-card, .how-card, .admin-card, ' +
             '.search-widget, .services-strip, #footer, .section-h2, .section-sub'
         );
 
@@ -59,7 +59,7 @@
     //  MOUSE TRACKING FOR CARDS
     // ═══════════════════════════════════════════════════════════════════════════
     function initMouseTracking() {
-        const cards = document.querySelectorAll('.glass-card, .trust-card, .how-card, .pro-card');
+        const cards = document.querySelectorAll('.glass-card, .trust-card, .how-card');
 
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {

@@ -32,8 +32,7 @@
       ☰
     </button>
     <div class="mobile-nav-overlay" onclick="toggleMobileNav()"></div>
-    <div class="nav-center" id="nav-center"
-      style="background:rgba(255,255,255,0.03); padding:4px; border-radius:40px; display:inline-flex; gap:4px; align-items:center; border: 1px solid var(--border-light);">
+    <div class="nav-center" id="nav-center">
       <button class="nav-tab active" id="tab-home" onclick="goPage('home')">Find Service</button>
       <button class="nav-tab" id="tab-how" onclick="scrollHow()">How it works</button>
       <button class="nav-tab" id="tab-register" onclick="goPage('register')">Register Service</button>
@@ -61,61 +60,50 @@
           <!-- Search Widget -->
           <div class="search-widget glass-card-deep">
             <p class="hero-sub-title">What are you looking for?</p>
-            <div class="type-toggle" style="grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));">
-              <div class="tt-card sel" id="tt-plumber" onclick="setType('plumber')">
-                <div class="tt-icon">🔧</div>
+            <div class="type-toggle">
+              <div class="tt-card sel" id="tt-plumber" onclick="setType('plumber')" style="background-image: url('/client/images/categories/plumbing.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Plumbing</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-elec" onclick="setType('electrician')">
-                <div class="tt-icon">⚡</div>
+              <div class="tt-card" id="tt-elec" onclick="setType('electrician')" style="background-image: url('/client/images/categories/electrician.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Electrician</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-beautician" onclick="setType('beautician')">
-                <div class="tt-icon">💄</div>
+              <div class="tt-card" id="tt-beautician" onclick="setType('beautician')" style="background-image: url('/client/images/categories/beautician.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Beautician</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-ac" onclick="setType('ac')">
-                <div class="tt-icon">❄️</div>
+              <div class="tt-card" id="tt-ac" onclick="setType('ac')" style="background-image: url('/client/images/categories/Ac repair.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">AC Repair</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-appliances" onclick="setType('appliances')">
-                <div class="tt-icon">📺</div>
+              <div class="tt-card" id="tt-appliances" onclick="setType('appliances')" style="background-image: url('/client/images/categories/Appliance.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Appliances</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-physio" onclick="setType('physiotherapist')">
-                <div class="tt-icon">🧘</div>
+              <div class="tt-card" id="tt-physio" onclick="setType('physiotherapist')" style="background-image: url('/client/images/categories/physio.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Physio</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-cleaner" onclick="setType('cleaner')">
-                <div class="tt-icon">🧹</div>
+              <div class="tt-card" id="tt-cleaner" onclick="setType('cleaner')" style="background-image: url('/client/images/categories/cleaning.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Cleaning</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-carpenter" onclick="setType('carpenter')">
-                <div class="tt-icon">🔨</div>
+              <div class="tt-card" id="tt-carpenter" onclick="setType('carpenter')" style="background-image: url('/client/images/categories/carpenter.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Carpenter</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-painter" onclick="setType('painter')">
-                <div class="tt-icon">🎨</div>
+              <div class="tt-card" id="tt-painter" onclick="setType('painter')" style="background-image: url('/client/images/categories/painter.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Painter</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-pest" onclick="setType('pest')">
-                <div class="tt-icon">🐜</div>
+              <div class="tt-card" id="tt-pest" onclick="setType('pest')" style="background-image: url('/client/images/categories/pest control.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">Pest Control</div>
-                <div class="tt-glow"></div>
               </div>
-              <div class="tt-card" id="tt-both" onclick="setType('both')">
-                <div class="tt-icon">🏠</div>
+              <div class="tt-card" id="tt-both" onclick="setType('both')" style="background-image: url('/client/images/categories/All service.jpeg');">
+                <div class="tt-overlay"></div>
                 <div class="tt-label">All Services</div>
-                <div class="tt-glow"></div>
               </div>
             </div>
 
@@ -153,7 +141,7 @@
         </div>
 
         <div class="hero-visuals-premium">
-          <div class="visual-man-wrapper parallax-slow" style="perspective:2000px;">
+          <div class="visual-man-wrapper parallax-slow" style="perspective:2000px; overflow:visible;">
             <img src="/client/images/pointing-handyman.png" class="hero-man-img" alt="FixKar Expert"
               style="transform:translateZ(50px);">
 
@@ -206,39 +194,53 @@
         <h2 class="section-h2">Simple, fast, transparent</h2>
         <p class="section-sub">Book a verified professional in 3 easy steps</p>
         <div class="how-grid premium-grid">
-          <div class="how-card premium-card">
+          <div class="how-card premium-card" data-tilt data-tilt-max="8" data-tilt-speed="1000">
             <div class="how-visual-box">
               <img src="/client/images/step-1.png" alt="Select Area" class="how-img">
+              <div class="how-overlay-fx scanner"></div>
               <div class="card-glass-layer"></div>
+              <div class="card-floating-badge"><i class="ri-map-pin-line"></i> ACTIVE RADAR</div>
+              <svg class="how-svg-fx" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="20" class="pulse-ring"></circle>
+              </svg>
             </div>
             <div class="how-content-area">
               <div class="how-num">STEP 01</div>
               <div class="how-title">Select your area</div>
-              <div class="how-desc">Choose your city and locality — or tap Detect Location to auto-fill.</div>
+              <div class="how-desc">Our smart radar detects nearby verified professionals in your locality automatically.</div>
             </div>
           </div>
-          <div class="how-card premium-card">
+          <div class="how-card premium-card" data-tilt data-tilt-max="8" data-tilt-speed="1000">
             <div class="how-visual-box">
               <img src="/client/images/step-2.png" alt="View Portfolio" class="how-img">
+              <div class="how-overlay-fx shimmer"></div>
               <div class="card-glass-layer"></div>
+              <div class="card-floating-badge gold"><i class="ri-shield-check-line"></i> VERIFIED PRO</div>
+              <div class="pro-mini-stats">
+                <span>⭐ 4.9</span>
+                <span>Jobs: 2.5k+</span>
+              </div>
             </div>
             <div class="how-content-area">
               <div class="how-num">STEP 02</div>
               <div class="how-title">View portfolio & book</div>
-              <div class="how-desc">Browse services, fees, and genuine reviews from your neighbours. One-tap booking.
-              </div>
+              <div class="how-desc">Transparency first. Browse real work photos, verified ratings, and fixed pricing.</div>
             </div>
           </div>
-          <div class="how-card premium-card">
+          <div class="how-card premium-card" data-tilt data-tilt-max="8" data-tilt-speed="1000">
             <div class="how-visual-box">
               <img src="/client/images/step-3.png" alt="Live Tracking" class="how-img">
+              <div class="how-overlay-fx grid-flow"></div>
               <div class="card-glass-layer"></div>
+              <div class="card-floating-badge"><i class="ri-navigation-line"></i> LIVE ETA: 2m</div>
+              <svg class="how-svg-fx path" viewBox="0 0 100 100">
+                <path d="M10,90 Q50,10 90,90" class="draw-path"></path>
+              </svg>
             </div>
             <div class="how-content-area">
               <div class="how-num">STEP 03</div>
               <div class="how-title">Live arrival tracking</div>
-              <div class="how-desc">Watch your professional's position update live on the map. Know exactly when they'll
-                arrive.</div>
+              <div class="how-desc">No more waiting. Watch your professional's real-time movement till they reach your door.</div>
             </div>
           </div>
         </div>
@@ -288,8 +290,6 @@
         </div>
         <div class="footer-col">
           <h3 class="footer-h">Services</h3>
-          <a href="/client/index.html?type=plumber" class="footer-link">Plumbing Setup</a>
-          <a href="/client/index.html?type=electrician" class="footer-link">Electrician Services</a>
           <a href="/client/index.html#how-section" class="footer-link">How it Works</a>
           <a href="/client/index.html?type=both" class="footer-link">All Services</a>
         </div>
@@ -377,9 +377,9 @@
           <div class="reg-sec-h"><span class="sec-badge" style="background:var(--amber)">2</span>Shop / Business Info
           </div>
           <div class="form-g">
-            <div class="fg full"><label class="fl">Shop / Business Name *</label><input type="text" class="fi"
+            <div class="fg full"><label class="fl">Shop / Business Name (Optional)</label><input type="text" class="fi"
                 id="r-shop" placeholder="Kumar Plumbing Works" /></div>
-            <div class="fg full"><label class="fl">Shop Address *</label><textarea class="fi" id="r-addr"
+            <div class="fg full"><label class="fl">Shop Address (Optional)</label><textarea class="fi" id="r-addr"
                 placeholder="Shop no., street, near landmark..."></textarea></div>
             <div class="fg" style="position:relative;">
               <label class="fl">City *</label>

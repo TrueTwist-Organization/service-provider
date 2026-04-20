@@ -681,7 +681,7 @@ function proCardHTML(p) {
         <div class="card-avatar ${typeClass === 'elec' ? 'av-elec' : typeClass === 'plumber' ? 'av-plumber' : 'av-' + typeClass}">${avatarContent}</div>
         <div>
           <div class="card-pname">${p.name}</div>
-          <div class="card-shop">${p.shop}</div>
+          <div class="card-shop">${p.shop || ''}</div>
           <div class="card-exp">${p.exp}+ yrs experience</div>
         </div>
       </div>
@@ -772,7 +772,7 @@ function openProfile(pid) {
     <div class="modal-hdr">
       <div>
         <div class="modal-ttl">${p.name}</div>
-        <div class="modal-sub">${p.shop} · ${isElec ? 'Electrician' : 'Plumber'}</div>
+        <div class="modal-sub">${p.shop || ''} · ${isElec ? 'Electrician' : 'Plumber'}</div>
       </div>
       <button class="modal-x" onclick="closeOverlay('profile-overlay')">✕</button>
     </div>
@@ -781,7 +781,7 @@ function openProfile(pid) {
         <div class="ph-avatar ${typeClass === 'elec' ? 'av-elec' : typeClass === 'plumber' ? 'av-plumber' : 'av-' + typeClass}">${avatarContent}</div>
         <div>
           <div class="ph-name">${p.name}</div>
-          <div class="ph-shop">${p.shop}</div>
+          <div class="ph-shop">${p.shop || ''}</div>
           <div class="ph-badges">
             <span class="ph-badge ${typeClass === 'elec' ? 'badge-elec' : typeClass === 'plumber' ? 'badge-plumber' : 'badge-' + typeClass}">${isElec ? '⚡ Electrician' : p.type.charAt(0).toUpperCase() + p.type.slice(1)}</span>
             ${p.verified ? '<span class="ph-badge spill verified">✓ Verified</span>' : ''}
@@ -873,11 +873,38 @@ function openBooking(pid) {
   if (!p) return;
   const isElec = p.type === 'electrician';
 
+  // All services from the website
+  const allServices = {
+    '🔧 Plumbing': ['Pipe Repair', 'Tap Fitting', 'Drain Cleaning', 'Geyser Service', 'Water Tank', 'Bathroom Fitting', 'Leakage Fix', 'Bore Well'],
+    '⚡ Electrical': ['Wiring', 'Fan / Light Fitting', 'Switchboard', 'Inverter / UPS', 'Short Circuit Fix', 'CCTV / Security', 'MCB / DB Panel', 'Solar Panel'],
+    '💄 Beautician': ['Facial / Cleanup', 'Hair Styling', 'Bridal Makeup', 'Waxing / Threading', 'Manicure / Pedicure'],
+    '❄️ AC Repair': ['AC Service', 'AC Repair', 'Gas Charge', 'AC Installation'],
+    '📺 Appliances': ['Washing Machine', 'Refrigerator', 'Microwave', 'Water Purifier', 'TV Repair'],
+    '🧘 Physiotherapy': ['Back Pain Therapy', 'Sports Injury', 'Post-Op Recovery', 'Elderly Care', 'Stroke Rehab'],
+    '🧹 Cleaning': ['Deep Home Cleaning', 'Bathroom Cleaning', 'Kitchen Deep Clean', 'Sofa / Carpet Spa', 'Full House Dusting'],
+    '🔨 Carpenter': ['Furniture Repair', 'Doors / Windows', 'Modular Kitchen', 'Custom Furniture'],
+    '🎨 Painter': ['Full Home Paint', 'Wall Decor', 'Waterproofing', 'Texture Paint'],
+    '🐜 Pest Control': ['General Pest', 'Termite Control', 'Cockroach Control', 'Bed Bug Treatment']
+  };
+
+  let serviceOptions = '<option value="">Select service…</option>';
+  for (const [category, services] of Object.entries(allServices)) {
+    serviceOptions += `<optgroup label="${category}">`;
+    serviceOptions += services.map(s => `<option>${s}</option>`).join('');
+    serviceOptions += '</optgroup>';
+  }
+
+  const typeLabels = {
+    plumber: 'Plumber', electrician: 'Electrician', beautician: 'Beautician',
+    ac: 'AC Technician', appliances: 'Appliance Expert', physiotherapist: 'Physiotherapist',
+    cleaner: 'Cleaner', carpenter: 'Carpenter', painter: 'Painter', pest: 'Pest Control'
+  };
+
   document.getElementById('booking-modal').innerHTML = `
     <div class="modal-hdr">
       <div>
-        <div class="modal-ttl">Book ${isElec ? 'Electrician' : 'Plumber'}</div>
-        <div class="modal-sub">${p.name} · ${p.shop}</div>
+        <div class="modal-ttl">Book ${typeLabels[p.type] || 'Professional'}</div>
+        <div class="modal-sub">${p.name} · ${p.shop || ''}</div>
       </div>
       <button class="modal-x" onclick="closeOverlay('booking-overlay')">✕</button>
     </div>
@@ -886,8 +913,7 @@ function openBooking(pid) {
         <div class="fg full">
           <label class="fl">Service Required *</label>
           <select class="fs" id="bk-svc">
-            <option value="">Select service…</option>
-            ${(p.services || []).map(s => `<option>${s}</option>`).join('')}
+            ${serviceOptions}
           </select>
         </div>
         <div class="fg"><label class="fl">Your Name *</label><input type="text" class="fi" id="bk-n" placeholder="Full name"/></div>
@@ -1099,7 +1125,6 @@ function registerPro(e) {
     const fields = {
       name: { val: get('r-name'), label: 'Full Name' },
       phone: { val: get('r-phone'), label: 'Mobile Number' },
-      shop: { val: get('r-shop'), label: 'Shop Name' },
       city: { val: get('r-city'), label: 'City' },
       area: { val: get('r-area'), label: 'Area' },
       pincode: { val: get('r-pin'), label: 'Pincode' },
@@ -1161,7 +1186,7 @@ function registerPro(e) {
       phone: fields.phone.val,
       email: get('r-email') || '',
       whatsapp: get('r-wa') || '',
-      shop: fields.shop.val,
+      shop: get('r-shop') || 'Individual',
       addr: get('r-addr') || '',
       city: fields.city.val,
       area: fields.area.val,
@@ -1172,10 +1197,10 @@ function registerPro(e) {
       about: get('r-about') || '',
       services,
       image: capturedImage,
-      rating: 0, 
+      rating: 5.0, // Start with a perfect rating for instant appeal
       reviews: 0, 
       bookings: 0, 
-      verified: false,
+      verified: true, // AUTO-VERIFIED AS REQUESTED
       reachedHomeCount: 0,
       joined: new Date().toLocaleDateString('en-IN'),
     };
@@ -1184,9 +1209,22 @@ function registerPro(e) {
     DB.setPros(pros);
     updateHeroStats();
 
+    // Simulating Admin Notification
+    const notifications = JSON.parse(localStorage.getItem('fk_admin_notifs') || '[]');
+    notifications.unshift({
+      id: 'notif' + Date.now(),
+      type: 'NEW_REGISTRATION',
+      title: 'New Service Provider Added',
+      msg: `${newPro.name} has registered as a ${newPro.type} in ${newPro.area}, ${newPro.city}.`,
+      data: newPro,
+      time: new Date().toLocaleTimeString(),
+      unread: true
+    });
+    localStorage.setItem('fk_admin_notifs', JSON.stringify(notifications));
+
     // 6. LOG TO APIFY
     logToApify({
-      event: 'PROFESSIONAL_REGISTERED',
+      event: 'PROFESSIONAL_REGISTERED_AUTO_VERIFIED',
       name: newPro.name,
       type: newPro.type,
       city: newPro.city
@@ -1203,11 +1241,17 @@ function registerPro(e) {
     document.getElementById('reg-photo-preview').innerHTML = '👤';
     capturedImage = null;
 
-    // Show Popup and Redirect to Home
+    // Show Popup and Redirect to Search Results for their category
     setTimeout(() => {
-      alert("Registration successfully created");
-      goPage('home');
+      toast("Congratulations! Your service is now LIVE & Verified.", 'ok');
+      setType(newPro.type); // Instantly set the search type
+      goPage('home'); // Go to home where search results are displayed
       if (btn) { btn.disabled = false; btn.innerHTML = originalText; }
+      
+      // Smooth scroll to results
+      setTimeout(() => {
+         document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 800);
     }, 500);
 
   } catch (err) {

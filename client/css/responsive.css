@@ -3,63 +3,126 @@
    Ultimate mobile-first responsiveness for all devices
    ═══════════════════════════════════════════════════════════════════════════════ */
 
+/* ── DEFAULT: Hide mobile-only elements on desktop ── */
+.mobile-menu-btn {
+    display: none;
+    font-size: 24px;
+    background: transparent;
+    border: none;
+    color: var(--white);
+    cursor: pointer;
+    padding: 8px;
+    z-index: 100;
+}
+
+.mobile-nav-overlay {
+    display: none;
+}
+
+/* ── DESKTOP nav-center styles ── */
+.nav-center {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 4px;
+    border-radius: 40px;
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ── TABLET ── */
 @media (max-width: 1024px) {
     .hero-inner { flex-direction: column !important; text-align: center; gap: 40px; padding-top: 40px; }
     .hero-content { max-width: 100%; display: flex; flex-direction: column; align-items: center; order: 2; }
-    .hero-visuals-premium { height: 320px !important; width: 100%; margin-top: 20px; order: 1 !important; position: relative !important; }
-    .hero-man-img { position: relative !important; bottom: 0 !important; right: 0 !important; transform: none !important; width: 80% !important; max-width: 320px !important; margin: 0 auto; display: block; }
+    .hero-visuals-premium { height: 420px !important; width: 100%; margin-top: 20px; order: 1 !important; position: relative !important; }
+    .hero-man-img { position: relative !important; bottom: 0 !important; right: 0 !important; transform: none !important; width: 95% !important; max-width: 420px !important; margin: 0 auto; display: block; }
 }
 
+/* ── MOBILE ── */
 @media (max-width: 768px) {
     #navbar { padding: 0 15px; }
-    .nav-links { display: none; } /* Hide desktop links */
-    
-    /* MOBILE NAVIGATION FLYOUT */
-    .nav-center {
-        display: none !important; /* Hide by default on mobile */
+
+    /* Show hamburger */
+    .mobile-menu-btn {
+        display: block;
     }
-    .nav-center.active {
-        display: flex !important;
+
+    /* Hide desktop nav-center by default on mobile */
+    .nav-center {
+        display: none;
         position: fixed;
         top: 0;
-        right: 0;
+        right: -100%;
         width: 280px;
         height: 100vh;
-        background: rgba(15, 15, 15, 0.98);
+        background: rgba(10, 10, 10, 0.98);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 20px;
-        z-index: 9999;
-        box-shadow: -10px 0 40px rgba(0,0,0,0.8);
-        backdrop-filter: blur(20px);
-        padding: 40px;
+        gap: 12px;
+        z-index: 10001;
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        padding: 40px 30px;
+        border-left: 1px solid rgba(234, 179, 8, 0.2);
+        border-radius: 0;
+        border: none;
+        border-left: 1px solid rgba(234, 179, 8, 0.15);
+        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .nav-center.active .nav-tab {
+
+    /* When mobile menu is toggled open */
+    .nav-center.active {
+        display: flex;
+        right: 0;
+    }
+
+    .nav-center .nav-tab {
         width: 100%;
-        font-size: 18px;
-        padding: 15px;
+        font-size: 17px;
+        padding: 16px 20px;
         text-align: center;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: var(--white);
+        transition: all 0.3s ease;
     }
+
+    .nav-center .nav-tab:hover,
+    .nav-center .nav-tab.active {
+        background: var(--amber) !important;
+        color: var(--void) !important;
+        border-color: var(--amber) !important;
+        box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
+    }
+
+    /* Dark overlay behind menu */
     .mobile-nav-overlay.active {
-        display: block !important;
+        display: block;
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.7);
-        z-index: 9998;
+        background: rgba(0, 0, 0, 0.65);
+        z-index: 10000;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
     }
 
-    #hero { padding: 40px 15px 60px; min-height: auto; }
-    .hero-h1 { font-size: 34px !important; line-height: 1.2; text-align: center; }
-    .hero-p { font-size: 15px; text-align: center; margin: 0 auto 30px; }
+    /* Hide the register button on mobile nav bar (it's in the flyout) */
+    .mobile-hide-btn { display: none !important; }
 
+    /* Hero adjustments */
+    #hero { padding: 40px 15px 60px; min-height: auto; }
+    .hero-h1 { font-size: 42px !important; line-height: 1.1; text-align: center; font-weight: 800; text-transform: capitalize; }
+    .hero-p { font-size: 16px; text-align: center; margin: 0 auto 30px; opacity: 0.9; }
+
+    /* Search widget */
     .search-widget { width: 100%; border-radius: 20px; }
     .search-form-grid { grid-template-columns: 1fr; gap: 12px; }
-    .type-toggle { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-    .tt-card { padding: 8px; }
-    .tt-icon { font-size: 18px; }
-    .tt-label { font-size: 10px; }
+    .type-toggle { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .tt-card { border-radius: 10px; }
+    .tt-label { font-size: 10px; padding: 6px 4px; }
 
     .services-strip { padding: 12px 15px; gap: 10px; flex-wrap: wrap; justify-content: center; }
     .strip-item { font-size: 11px; padding: 6px 12px; }
@@ -74,18 +137,21 @@
     .footer-col { align-items: center; }
 }
 
+/* ── SMALL MOBILE ── */
 @media (max-width: 480px) {
-    .hero-h1 { font-size: 28px !important; }
+    .hero-h1 { font-size: 36px !important; }
+    .hero-visuals-premium { height: 380px !important; }
+    .hero-man-img { max-width: 360px !important; }
     .tt-card { border-radius: 10px; }
     .nav-inner { gap: 10px; }
     .nav-right { gap: 5px !important; }
     .nav-right .nav-cta { padding: 8px 12px; font-size: 11px !important; border-radius: 20px !important; min-width: auto !important; }
-    .mobile-hide-btn { display: block !important; }
     .logo { font-size: 18px; }
 }
 
-@media (min-width: 1025px) {
-    .mobile-hide-btn { display: none !important; }
+/* ── DESKTOP: Show Register button ── */
+@media (min-width: 769px) {
+    .mobile-hide-btn { display: block !important; }
 }
 
 /* Fix for the registration button hit area on mobile */
